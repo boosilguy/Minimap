@@ -1,2 +1,0 @@
-# Minimap
-Unity Minimap Asset

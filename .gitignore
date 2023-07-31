@@ -2,7 +2,7 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-/[Ll]ibrary/
+My project/[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
@@ -73,3 +73,5 @@ crashlytics-build.properties
 
 # *.unitypackage 제거에 따른 메타 파일 제거
 *.unitypackage.meta
+
+[Ll]ibrary/
