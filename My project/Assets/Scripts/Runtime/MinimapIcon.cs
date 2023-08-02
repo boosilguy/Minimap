@@ -10,7 +10,7 @@ namespace minimap.runtime
         [SerializeField] private string _tag;
         [SerializeField] private GameObject _iconPrefab;
 
-        public string Tag => _tag;
-        public GameObject IconPrefab => _iconPrefab;
+        internal string Tag => _tag;
+        internal GameObject IconPrefab => _iconPrefab;
     }
 }

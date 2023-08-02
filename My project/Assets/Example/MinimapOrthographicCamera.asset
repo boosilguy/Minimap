@@ -16,10 +16,18 @@ MonoBehaviour:
   _defaultSize: 20
   _defaultNearClipPlane: 1
   _defaultFarClipPlane: 1000
-  _minSize: 0
-  _maxSize: 0
+  _minSize: 10
+  _maxSize: 50
+  _worldThreshold:
+    _center: {x: 0, y: 0}
+    _width: 25
+    _height: 25
+  _zoomSpeed: 1
+  _moveSpeed: 0.0005
   _minimapIcons:
   - _tag: Player
     _iconPrefab: {fileID: 7969430742396131413, guid: 25af0c110f81f54469ed64ca04e73dcb, type: 3}
   - _tag: Dummy
     _iconPrefab: {fileID: 7969430742396131413, guid: 42d2763ed65fc574aade590b2d9692ab, type: 3}
+  - _tag: MapNameIcon
+    _iconPrefab: {fileID: 3245133465761771131, guid: 46e5d6ac4aa19df4a90c9d59d85b5365, type: 3}

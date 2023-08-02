@@ -1,3 +1,5 @@
+using minimap.utility;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +8,16 @@ namespace minimap.runtime.camera
     [CreateAssetMenu(fileName = "MinimapOrthographicCamera", menuName = "MinimapCreator/MinimapOrthographicCamera")]
     public class MinimapOrthographicCamera : MinimapCamera
     {
-        [SerializeField] private float _defaultHeight;
-        [SerializeField] private float _defaultSize;
-        [SerializeField] private float _defaultNearClipPlane;
-        [SerializeField] private float _defaultFarClipPlane;
-        [SerializeField] private float _minSize;
-        [SerializeField] private float _maxSize;
+        [SerializeField] private float _defaultHeight = 20;
+        [SerializeField] private float _defaultSize = 20;
+        [SerializeField] private float _defaultNearClipPlane = 1;
+        [SerializeField] private float _defaultFarClipPlane = 1000;
+        [SerializeField] private float _minSize = 10;
+        [SerializeField] private float _maxSize = 50;
+
+        [SerializeField] private PlaneBounds _worldBoundary = new PlaneBounds(Vector2.zero, 100, 100);
+        [SerializeField] private float _zoomSpeed = 0.01f;
+        [SerializeField] private float _moveSpeed = 0.01f;
 
         [SerializeField] private List<MinimapIcon> _minimapIcons;
 
@@ -23,8 +29,6 @@ namespace minimap.runtime.camera
         public float DefaultSize => _defaultSize;
         public override float DefaultNearClipPlane => _defaultNearClipPlane;
         public override float DefaultFarClipPlane => _defaultFarClipPlane;
-        public override float MinSize => _minSize;
-        public override float MaxSize => _maxSize;
 
         public override List<MinimapIcon> MinimapIcons
         {
@@ -41,11 +45,11 @@ namespace minimap.runtime.camera
             get
             {
                 if (_camera == null)
-                    _camera = InitializeCamera("MinimapOrthographicCamera");
+                    _camera = InitializeCamera(MinimapRuntime.MINIMAP_ORTHOGRAPHIC_CAM_NAME);
 
                 if (_depthOnlyCamera == null)
                 {
-                    _depthOnlyCamera = InitializeCamera("DepthOnlyCamera");
+                    _depthOnlyCamera = InitializeCamera(MinimapRuntime.MINIMAP_DEPTH_CAM_NAME);
                     _depthOnlyCamera.clearFlags = CameraClearFlags.Depth;
                     _depthOnlyCamera.transform.parent = _camera.transform;
                     _depthOnlyCamera.cullingMask = LayerMask.GetMask(MinimapRuntime.EDITOR_MINIMAP_LAYER_NAME);
@@ -61,9 +65,12 @@ namespace minimap.runtime.camera
             {
                 if (_depthOnlyCamera == null)
                 {
-                    _depthOnlyCamera = InitializeCamera("DepthOnlyCamera");
-                    _depthOnlyCamera.transform.parent = Camera.transform;
-                    _depthOnlyCamera.cullingMask = LayerMask.GetMask(MinimapRuntime.EDITOR_MINIMAP_LAYER_NAME);
+                    if (_camera == null)
+                    {
+                        Debug.LogError("[MinimapCamera] DepthOnlyCamera와 Camera가 null입니다. DepthOnlyCamera를 초기화하기 위해서는 Camera를 초기화해야 합니다.");
+                        return null;
+                    }
+                    throw new InvalidOperationException("[MinimapCamera] 비정상적인 Operation으로 인해, DepthOnlyCamera가 null입니다.");
                 }
 
                 return _depthOnlyCamera;
@@ -90,6 +97,7 @@ namespace minimap.runtime.camera
             minimapCamera.orthographicSize = DefaultSize;
             minimapCamera.nearClipPlane = DefaultNearClipPlane;
             minimapCamera.farClipPlane = DefaultFarClipPlane;
+            minimapCamera.gameObject.AddComponent<CameraWithNoShadow>();
 
             return minimapCamera;
         }
@@ -103,12 +111,39 @@ namespace minimap.runtime.camera
 
         public override void ZoomIn()
         {
-            throw new System.NotImplementedException();
+            float newZoom = _camera.orthographicSize - _zoomSpeed;
+            _camera.orthographicSize = Mathf.Max(newZoom, _minSize);
+            _depthOnlyCamera.orthographicSize = Mathf.Max(newZoom, _minSize);
         }
 
         public override void ZoomOut()
         {
-            throw new System.NotImplementedException();
+            float newZoom = _camera.orthographicSize + _zoomSpeed;
+            _camera.orthographicSize = Mathf.Min(newZoom, _maxSize);
+            _depthOnlyCamera.orthographicSize = Mathf.Min(newZoom, _maxSize);
+        }
+
+        public override void ZoomReset()
+        {
+            _camera.orthographicSize = DefaultSize;
+            _depthOnlyCamera.orthographicSize = DefaultSize;
+        }
+
+        public override void Move(Vector2 position)
+        {
+            Vector3 newPostion = _camera.transform.position - new Vector3(position.x, 0, position.y) * _moveSpeed;
+            if (newPostion.x < _worldBoundary.Min.x || 
+                newPostion.x > _worldBoundary.Max.x || 
+                newPostion.z < _worldBoundary.Min.y || 
+                newPostion.z > _worldBoundary.Max.y)
+                return;
+            
+            _camera.transform.position = newPostion;
+        }
+
+        public override void ResetToTarget()
+        {
+            Camera.transform.localPosition = new Vector3(0f, DefaultHeight, 0f);
         }
     }
 }

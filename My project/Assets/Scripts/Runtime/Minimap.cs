@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace minimap.runtime
 {
-    public class Minimap
+    public class Minimap : IDisposable
     {
         public static List<Minimap> RegisterdMinimaps = new List<Minimap>();
 
         private string _name;
         public string Name => _name;
-        public Dictionary<MinimapIconBase, GameObject> MinimapIconBases { get; } = new Dictionary<MinimapIconBase, GameObject>();
+        public Dictionary<MinimapIconSetterBase, GameObject> MinimapIconBases { get; } = new Dictionary<MinimapIconSetterBase, GameObject>();
 
         public Camera Camera => _minimapCamera.Camera;
         public List<MinimapIcon> MinimapIcons => _minimapCamera.MinimapIcons;
@@ -39,6 +39,7 @@ namespace minimap.runtime
         }
 
         private bool _initialized;
+        public bool Initialized => _initialized;
 
         public bool Bake(string name)
         {
@@ -67,8 +68,8 @@ namespace minimap.runtime
                 // 현재 OnEnabled된 MinimapIcon 대상들을 긁어 오지만, MinimapIconBase의 TargetMinimapName이 특정된 Minimap에 대해서만 가져옴.
                 foreach (MinimapIcon icon in MinimapIcons)
                 {
-                    List<MinimapIconBase> targets = GameObject.FindGameObjectsWithTag(icon.Tag)
-                        .Select(x => x.GetComponent<MinimapIconBase>())
+                    List<MinimapIconSetterBase> targets = GameObject.FindGameObjectsWithTag(icon.Tag)
+                        .Select(x => x.GetComponent<MinimapIconSetterBase>())
                         .Where(x => x.TargetMinimapName == name)
                         .ToList();
 
@@ -121,7 +122,7 @@ namespace minimap.runtime
             return true;
         }
 
-        public void RegistMinimapIconInRuntime(MinimapIconBase target)
+        public void RegistMinimapIconInRuntime(MinimapIconSetterBase target)
         {
             // 이미 등록되어 있다면 무시.
             if (MinimapIconBases.ContainsKey(target))
@@ -146,6 +147,26 @@ namespace minimap.runtime
                     }
                 }
             }
+        }
+
+        public void ZoomIn()
+        {
+            _minimapCamera.ZoomIn();
+        }
+
+        public void ZoomOut()
+        {
+            _minimapCamera.ZoomOut();
+        }
+
+        public void ZoomReset()
+        {
+            _minimapCamera.ZoomReset();
+        }
+
+        public void Dispose()
+        {
+            RegisterdMinimaps.Remove(this);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace minimap.sample
             forward.Normalize();
             right.Normalize();
 
-            // ¿òÁ÷ÀÌ´Â ¹æÇâ ¼³Á¤
+            // ì›€ì§ì´ëŠ” ë°©í–¥ ì„¤ì •
             Vector3 targetDirection = forward * verticalInput + right * horizontalInput;
             moveDirection = Vector3.Lerp(moveDirection, targetDirection, moveSpeed);
 
@@ -50,9 +50,12 @@ namespace minimap.sample
 
         private void RotateCharacterWithMouse()
         {
-            // Ä³¸¯ÅÍ ÁÂ¿ì È¸Àü
-            float targetAngle = transform.eulerAngles.y + mouseXInput * rotationSpeed;
-            transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+            if (Input.GetMouseButton(1))
+            {
+                // ìºë¦­í„° ì¢Œìš° íšŒì „
+                float targetAngle = transform.eulerAngles.y + mouseXInput * rotationSpeed;
+                transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+            }
         }
     }
 }

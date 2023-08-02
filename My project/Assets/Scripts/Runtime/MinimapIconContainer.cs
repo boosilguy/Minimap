@@ -23,5 +23,10 @@ namespace minimap.runtime
                 return _instance;
             }
         }
+
+        private void OnDestroy()
+        {
+            _instance = null;
+        }
     }
 }
