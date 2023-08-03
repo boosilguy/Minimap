@@ -7,24 +7,50 @@ using System.Linq;
 
 namespace minimap.runtime
 {
+    /// <summary>
+    /// 미니맵 클래스
+    /// </summary>
     public class Minimap : IDisposable
     {
+        /// <summary>
+        /// 생성된 미니맵들을 관리하는 리스트
+        /// </summary>
         public static List<Minimap> RegisterdMinimaps = new List<Minimap>();
 
         private string _name;
+        /// <summary>
+        /// 미니맵 이름
+        /// </summary>
         public string Name => _name;
+        /// <summary>
+        /// 미니맵 아이콘 Setter와, 해당 Setter에 Minimap Icon으로 주입될 프리팹
+        /// </summary>
         public Dictionary<MinimapIconSetterBase, GameObject> MinimapIconBases { get; } = new Dictionary<MinimapIconSetterBase, GameObject>();
-
+        /// <summary>
+        /// 카메라
+        /// </summary>
         public Camera Camera => _minimapCamera.Camera;
+        /// <summary>
+        /// 태그 별 주입될 아이콘 프리팹들을 관리하는 리스트
+        /// </summary>
         public List<MinimapIcon> MinimapIcons => _minimapCamera.MinimapIcons;
 
         private Dictionary<string, RenderTexture> _renderTextures = new Dictionary<string, RenderTexture>();
+        /// <summary>
+        /// 미니맵에 등록된 RenderTexture와 그의 키 값
+        /// </summary>
         public Dictionary<string, RenderTexture> RenderTextures => _renderTextures;
 
         private Dictionary<string, UnityEvent<RenderTexture>> _onChangeTextureEvents = new Dictionary<string, UnityEvent<RenderTexture>>();
+        /// <summary>
+        /// 미니맵의 RenderTexture 변경 시, 호출될 이벤트와 RenderTexture의 키 값
+        /// </summary>
         public Dictionary<string, UnityEvent<RenderTexture>> OnChangeTextureEvents => _onChangeTextureEvents;
 
         private Transform _trackingTarget;
+        /// <summary>
+        /// 트래킹 대상
+        /// </summary>
         public Transform TrackingTarget
         {
             get => _trackingTarget;
@@ -32,6 +58,9 @@ namespace minimap.runtime
         }
     
         private MinimapCamera _minimapCamera;
+        /// <summary>
+        /// 미니맵 카메라
+        /// </summary>
         public MinimapCamera MinimapCamera
         {
             get => _minimapCamera;
@@ -39,8 +68,22 @@ namespace minimap.runtime
         }
 
         private bool _initialized;
+        /// <summary>
+        /// 초기화 여부
+        /// </summary>
         public bool Initialized => _initialized;
 
+        private string _currentRenderTextureKey;
+        /// <summary>
+        /// 현재 RenderTexture의 Key
+        /// </summary>
+        public string CurrentRenderTextureKey => _currentRenderTextureKey;
+
+        /// <summary>
+        /// 지정된 값에 맞게 미니맵의 멤버 필드를 초기화합니다.
+        /// </summary>
+        /// <param name="name">미니맵 이름</param>
+        /// <returns>성공 여부</returns>
         public bool Bake(string name)
         {
             _initialized = false;
@@ -94,6 +137,11 @@ namespace minimap.runtime
             return _initialized;
         }
 
+        /// <summary>
+        /// 미니맵을 특정 RenderTexture에 렌더링합니다.
+        /// </summary>
+        /// <param name="renderTexturesKey">타겟 RenderTexture</param>
+        /// <returns>성공 여부</returns>
         public bool Run(string renderTexturesKey)
         {
             if (!_initialized)
@@ -115,13 +163,18 @@ namespace minimap.runtime
 
             _minimapCamera.Camera.targetTexture = _renderTextures[renderTexturesKey];
             _minimapCamera.DepthOnlyCamera.targetTexture = _renderTextures[renderTexturesKey];
-            
+            _currentRenderTextureKey = renderTexturesKey;
+
             if (OnChangeTextureEvents.ContainsKey(renderTexturesKey))
                 OnChangeTextureEvents[renderTexturesKey].Invoke(_renderTextures[renderTexturesKey]);
 
             return true;
         }
 
+        /// <summary>
+        /// Runtime 중, 미니맵에 MinimapIconSetterBase를 등록합니다.
+        /// </summary>
+        /// <param name="target">MinimapIconSetter</param>
         public void RegistMinimapIconInRuntime(MinimapIconSetterBase target)
         {
             // 이미 등록되어 있다면 무시.
@@ -149,19 +202,45 @@ namespace minimap.runtime
             }
         }
 
+        /// <summary>
+        /// 줌 인
+        /// </summary>
         public void ZoomIn()
         {
             _minimapCamera.ZoomIn();
         }
 
+        /// <summary>
+        /// 줌 아웃
+        /// </summary>
         public void ZoomOut()
         {
             _minimapCamera.ZoomOut();
         }
 
+        /// <summary>
+        /// 줌 리셋
+        /// </summary>
         public void ZoomReset()
         {
             _minimapCamera.ZoomReset();
+        }
+
+        /// <summary>
+        /// 이동
+        /// </summary>
+        /// <param name="movement">이동량</param>
+        public void Move(Vector2 movement)
+        {
+            _minimapCamera.Move(movement);
+        }
+
+        /// <summary>
+        /// 이동 초기화
+        /// </summary>
+        public void MoveReset()
+        {
+            _minimapCamera.ResetToTarget();
         }
 
         public void Dispose()

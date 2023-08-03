@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace minimap.runtime.camera
 {
+    /// <summary>
+    /// Perspective Camera를 사용하는 미니맵 카메라
+    /// </summary>
     [CreateAssetMenu(fileName = "MinimapPerspectiveCamera", menuName = "MinimapCreator/MinimapPerspectiveCamera")]
     public class MinimapPerspectiveCamera : MinimapCamera
     {
@@ -17,7 +20,9 @@ namespace minimap.runtime.camera
         [SerializeField] private float _minMagnification = 0.8f;
         [SerializeField] private float _maxMagnification = 5;
 
-        [SerializeField] private PlaneBounds _worldBoundary = new PlaneBounds(Vector2.zero, 100, 100);
+        [SerializeField] private Vector2 _worldCenter = Vector2.zero;
+        [SerializeField] private float _worldWidth = 100;
+        [SerializeField] private float _worldHeight = 100;
         [SerializeField] private float _zoomSpeed = 0.8f;
         [SerializeField] private float _moveSpeed = 0.01f;
 
@@ -26,10 +31,20 @@ namespace minimap.runtime.camera
         private Camera _camera;
         private Camera _depthOnlyCamera;
         private Transform _trackingTarget;
+        private PlaneBounds _worldBoundary;
 
         public override float DefaultHeight => _defaultHeight;
+        /// <summary>
+        /// Perspective 카메라와 타켓 사이의 Z축 기본 거리
+        /// </summary>
         public float DefaultDistance => _defaultDistance;
+        /// <summary>
+        /// Perspective 카메라의 기본 각도
+        /// </summary>
         public float DefaultAngle => _defaultAngle;
+        /// <summary>
+        /// Perspective 카메라의 기본 FOV
+        /// </summary>
         public float DefaultFOV => _defaultFOV;
         public override float DefaultNearClipPlane => _defaultNearClipPlane;
         public override float DefaultFarClipPlane => _defaultFarClipPlane;
@@ -88,6 +103,16 @@ namespace minimap.runtime.camera
             {
                 StartTrackingTarget(value);
                 _trackingTarget = value;
+            }
+        }
+
+        public override PlaneBounds WorldBoundary
+        {
+            get
+            {
+                if (_worldBoundary == null)
+                    _worldBoundary = new PlaneBounds(_worldCenter, _worldWidth, _worldHeight);
+                return _worldBoundary;
             }
         }
 

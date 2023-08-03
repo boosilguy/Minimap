@@ -1,9 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace minimap.runtime
 {
+    /// <summary>
+    /// ScriptableObject로 생성될 MinimapCamera의 아이콘 리소스 클래스
+    /// </summary>
     [System.Serializable]
     public class MinimapIcon
     {

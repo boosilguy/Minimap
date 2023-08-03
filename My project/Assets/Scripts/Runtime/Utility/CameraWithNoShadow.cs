@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace minimap.utility
 {
+    /// <summary>
+    /// Camera의 그림자를 끄는 컴포넌트
+    /// </summary>
     public class CameraWithNoShadow : MonoBehaviour
     {
         float storedShadowDistance;

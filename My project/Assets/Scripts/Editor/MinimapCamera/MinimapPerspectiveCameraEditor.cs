@@ -17,13 +17,14 @@ namespace minimap.editor.camera
             {
                 alignment = TextAnchor.MiddleCenter,
                 stretchWidth = true,
-                fixedHeight = 250,
-                margin = new RectOffset(15, 15, 15, 15)
+                fixedHeight = 200,
+                margin = new RectOffset(5, 5, 5, 5)
             };
         }
 
         public override void OnInspectorGUI()
         {
+            #region Serialized Properties
             SerializedProperty defaultHeight = serializedObject.FindProperty("_defaultHeight");
             SerializedProperty defaultDistance = serializedObject.FindProperty("_defaultDistance");
             SerializedProperty defaultAngle = serializedObject.FindProperty("_defaultAngle");
@@ -34,38 +35,42 @@ namespace minimap.editor.camera
             SerializedProperty commandZoomSpeed = serializedObject.FindProperty("_zoomSpeed");
             SerializedProperty commandMinMag = serializedObject.FindProperty("_minMagnification");
             SerializedProperty commandMaxMag = serializedObject.FindProperty("_maxMagnification");
-            SerializedProperty commandMoveThreshold = serializedObject.FindProperty("_worldBoundary");
             SerializedProperty commandMoveSpeed = serializedObject.FindProperty("_moveSpeed");
 
+            SerializedProperty worldCenter = serializedObject.FindProperty("_worldCenter");
+            SerializedProperty worldWidth = serializedObject.FindProperty("_worldWidth");
+            SerializedProperty worldHeight = serializedObject.FindProperty("_worldHeight");
+
             SerializedProperty minimapIcons = serializedObject.FindProperty("_minimapIcons");
+            #endregion
 
-
+            #region Draw
             EditorGUILayout.BeginVertical("helpbox");
             {
-                EditorGUILayout.Space(15);
+                EditorGUILayout.Space(5);
                 {
                     EditorGUILayout.LabelField("Minimap Guideline", EditorStyles.boldLabel);
                     GUILayout.Label(_perspectiveGuideTexture, _guideTextureStyle);
 
-                    EditorGUILayout.Space(25);
+                    EditorGUILayout.Space(5);
 
                     EditorGUILayout.PropertyField(defaultHeight);
                     EditorGUILayout.PropertyField(defaultDistance);
                     EditorGUILayout.PropertyField(defaultAngle);
 
-                    EditorGUILayout.Space(25);
+                    EditorGUILayout.Space(5);
 
                     EditorGUILayout.PropertyField(defaultFOV);
                     EditorGUILayout.PropertyField(defaultNearClipPlane);
                     EditorGUILayout.PropertyField(defaultFarClipPlane);
                 }
-                EditorGUILayout.Space(15);
+                EditorGUILayout.Space(5);
             }
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginVertical("helpbox");
             {
-                EditorGUILayout.Space(15);
+                EditorGUILayout.Space(5);
                 {
                     EditorGUILayout.LabelField("Minimap Command Variables", EditorStyles.boldLabel);
 
@@ -79,13 +84,29 @@ namespace minimap.editor.camera
 
                     EditorGUILayout.PropertyField(commandMoveSpeed);
                 }
-                EditorGUILayout.Space(15);
+                EditorGUILayout.Space(5);
             }
             EditorGUILayout.EndVertical();
-            EditorGUILayout.Space(15);
-            EditorGUILayout.PropertyField(commandMoveThreshold);
-            EditorGUILayout.Space(15);
+
+            EditorGUILayout.BeginVertical("helpbox");
+            {
+                EditorGUILayout.Space(5);
+                {
+                    EditorGUILayout.LabelField("World Configuration", EditorStyles.boldLabel);
+
+                    EditorGUILayout.Space(5);
+
+                    EditorGUILayout.PropertyField(worldCenter);
+                    EditorGUILayout.PropertyField(worldWidth);
+                    EditorGUILayout.PropertyField(worldHeight);
+                }
+                EditorGUILayout.Space(5);
+            }
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.Space(5);
             EditorGUILayout.PropertyField(minimapIcons);
+            #endregion
 
             serializedObject.ApplyModifiedProperties();
         }

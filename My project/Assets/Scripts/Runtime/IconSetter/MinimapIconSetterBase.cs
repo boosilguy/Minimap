@@ -4,17 +4,30 @@ using UniRx.Triggers;
 
 namespace minimap.runtime
 {
+    /// <summary>
+    /// 기본 미니맵 아이콘 Setter 클래스
+    /// </summary>
     public class MinimapIconSetterBase : MonoBehaviour 
     {
         [SerializeField] private string _targetMinimapName;
+        /// <summary>
+        /// 미니맵 아이콘을 등록할 미니맵 이름
+        /// </summary>
         public string TargetMinimapName => _targetMinimapName;
 
         private GameObject _minimapIcon;
+        /// <summary>
+        /// 인스턴스가 존재하는 게임오브젝트가 미니맵에 표시될 아이콘 프리팹
+        /// </summary>
         public GameObject MinimapIcon
         {
             set => _minimapIcon = value;
         }
 
+        /// <summary>
+        /// 현재 TargetMinimapName의 인스턴스를 가져옵니다.
+        /// </summary>
+        /// <returns>TargetMinimapName 미니맵 인스턴스</returns>
         public Minimap GetMinimap()
         {
             return Minimap.RegisterdMinimaps.Find(minimap => minimap.Name == _targetMinimapName);

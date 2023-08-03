@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace minimap.runtime.camera
 {
+    /// <summary>
+    /// Orthographic Camera를 사용하는 미니맵 카메라
+    /// </summary>
     [CreateAssetMenu(fileName = "MinimapOrthographicCamera", menuName = "MinimapCreator/MinimapOrthographicCamera")]
     public class MinimapOrthographicCamera : MinimapCamera
     {
@@ -15,7 +18,9 @@ namespace minimap.runtime.camera
         [SerializeField] private float _minSize = 10;
         [SerializeField] private float _maxSize = 50;
 
-        [SerializeField] private PlaneBounds _worldBoundary = new PlaneBounds(Vector2.zero, 100, 100);
+        [SerializeField] private Vector2 _worldCenter = Vector2.zero;
+        [SerializeField] private float _worldWidth = 100;
+        [SerializeField] private float _worldHeight = 100;
         [SerializeField] private float _zoomSpeed = 0.01f;
         [SerializeField] private float _moveSpeed = 0.01f;
 
@@ -24,8 +29,12 @@ namespace minimap.runtime.camera
         private Camera _camera;
         private Camera _depthOnlyCamera;
         private Transform _trackingTarget;
+        private PlaneBounds _worldBoundary;
 
         public override float DefaultHeight => _defaultHeight;
+        /// <summary>
+        /// Ortho 카메라의 기본 사이즈
+        /// </summary>
         public float DefaultSize => _defaultSize;
         public override float DefaultNearClipPlane => _defaultNearClipPlane;
         public override float DefaultFarClipPlane => _defaultFarClipPlane;
@@ -84,6 +93,16 @@ namespace minimap.runtime.camera
             {
                 StartTrackingTarget(value);
                 _trackingTarget = value;
+            }
+        }
+
+        public override PlaneBounds WorldBoundary
+        {
+            get
+            {
+                if (_worldBoundary == null)
+                    _worldBoundary = new PlaneBounds(_worldCenter, _worldWidth, _worldHeight);
+                return _worldBoundary;
             }
         }
 
