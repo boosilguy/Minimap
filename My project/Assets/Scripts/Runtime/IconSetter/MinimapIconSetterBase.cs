@@ -68,5 +68,10 @@ namespace minimap.runtime
             var updatedPosition = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
             instantiated.transform.position = updatedPosition;
         }
+
+        protected virtual void OnDestroy()
+        {
+            GetMinimap().UnregistMinimapIconInRuntime(this);
+        }
     }
 }

@@ -203,6 +203,20 @@ namespace minimap.runtime
         }
 
         /// <summary>
+        /// Runtime 중, 미니맵에 MinimapIconSetterBase를 등록 해제합니다.
+        /// </summary>
+        /// <param name="target">MinimapIconSetter</param>
+        public void UnregistMinimapIconInRuntime(MinimapIconSetterBase target)
+        {
+            if (MinimapIconBases.ContainsKey(target))
+            {
+                if (MinimapIconBases[target] != null)
+                    GameObject.Destroy(MinimapIconBases[target]);
+                MinimapIconBases.Remove(target);
+            }
+        }
+
+        /// <summary>
         /// 줌 인
         /// </summary>
         public void ZoomIn()
