@@ -151,10 +151,10 @@ namespace minimap.runtime.camera
         public override void Move(Vector2 position)
         {
             Vector3 newPostion = _camera.transform.position - new Vector3(position.x, 0, position.y) * _moveSpeed;
-            if (newPostion.x < _worldBoundary.Min.x || 
-                newPostion.x > _worldBoundary.Max.x || 
-                newPostion.z < _worldBoundary.Min.y || 
-                newPostion.z > _worldBoundary.Max.y)
+            if (newPostion.x < WorldBoundary.Min.x || 
+                newPostion.x > WorldBoundary.Max.x || 
+                newPostion.z < WorldBoundary.Min.y || 
+                newPostion.z > WorldBoundary.Max.y)
                 return;
             
             _camera.transform.position = newPostion;

@@ -6,12 +6,11 @@ namespace minimap.utility
     /// <summary>
     /// 2D Bound 클래스
     /// </summary>
-    [Serializable]
     public class PlaneBounds
     {
-        [SerializeField] private Vector2 _center;
-        [SerializeField] private float _width;
-        [SerializeField] private float _height;
+        private Vector2 _center;
+        private float _width;
+        private float _height;
 
         public Vector2 Center => _center;
         public float Width => _width;
@@ -24,7 +23,7 @@ namespace minimap.utility
         {
             get
             {
-                return new Vector2(_center.x - _width, _center.y - _height);
+                return new Vector2(_center.x - _width/2, _center.y - _height/2);
             }
         }
 
@@ -35,7 +34,7 @@ namespace minimap.utility
         {
             get
             {
-                return new Vector2(_center.x + _width, _center.y + _height);
+                return new Vector2(_center.x + _width/2, _center.y + _height/2);
             }
         }
 

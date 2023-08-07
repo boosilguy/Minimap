@@ -18,12 +18,11 @@ MonoBehaviour:
   _defaultFarClipPlane: 1000
   _minSize: 10
   _maxSize: 50
-  _worldThreshold:
-    _center: {x: 0, y: 0}
-    _width: 25
-    _height: 25
+  _worldCenter: {x: 0, y: 0}
+  _worldWidth: 100
+  _worldHeight: 100
   _zoomSpeed: 1
-  _moveSpeed: 0.0005
+  _moveSpeed: 0.005
   _minimapIcons:
   - _tag: Player
     _iconPrefab: {fileID: 7969430742396131413, guid: 25af0c110f81f54469ed64ca04e73dcb, type: 3}

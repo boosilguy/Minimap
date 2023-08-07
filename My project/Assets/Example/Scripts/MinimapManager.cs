@@ -84,6 +84,10 @@ namespace minimap.sample
                     ZoomInAndOutMinimap();
                     MoveMinimap();
                 }
+                else
+                {
+                    _isDragging = false;
+                }    
             }
         }
 
