@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace minimap.runtime
@@ -25,6 +26,19 @@ namespace minimap.runtime
                     }
                 }
                 return _instance;
+            }
+        }
+
+        private List<Minimap> _minimaps;
+        public List<Minimap> Minimaps
+        {
+            get
+            {
+                if (_minimaps == null)
+                {
+                    _minimaps = Minimap.RegisterdMinimaps;
+                }
+                return _minimaps;
             }
         }
 

@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed1312175039c84c89590b33d789242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minimapCamera: {fileID: 11400000, guid: 8ec1eb3c7265e34459568ddfb61541c4, type: 2}
+  _minimapCamera: {fileID: 11400000, guid: 217f9c5009687ff4289cdb490ca74b4c, type: 2}
   _trackingTarget: {fileID: 1351188823}
   _dummy: {fileID: 5448224686398327728, guid: 5ad6b2678c702144dbf6aeb619a1b547, type: 3}
   _defaultMinimapRawImage: {fileID: 1792697009}
@@ -1182,7 +1182,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 63
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
