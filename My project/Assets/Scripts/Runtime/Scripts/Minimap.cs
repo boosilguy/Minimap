@@ -17,11 +17,6 @@ namespace minimap.runtime
         /// </summary>
         public static List<Minimap> RegisterdMinimaps = new List<Minimap>();
 
-        private string _name;
-        /// <summary>
-        /// 미니맵 이름
-        /// </summary>
-        public string Name => _name;
         /// <summary>
         /// 미니맵 아이콘 Setter와, 해당 Setter에 Minimap Icon으로 주입될 프리팹
         /// </summary>
@@ -29,11 +24,11 @@ namespace minimap.runtime
         /// <summary>
         /// 카메라
         /// </summary>
-        public Camera Camera => _minimapCamera.Camera;
+        public Camera Camera => _minimapSetter.Camera;
         /// <summary>
         /// 태그 별 주입될 아이콘 프리팹들을 관리하는 리스트
         /// </summary>
-        public List<MinimapIcon> MinimapIcons => _minimapCamera.MinimapIcons;
+        public List<MinimapIcon> MinimapIcons => _minimapSetter.MinimapIcons;
 
         private Dictionary<string, RenderTexture> _renderTextures = new Dictionary<string, RenderTexture>();
         /// <summary>
@@ -57,14 +52,14 @@ namespace minimap.runtime
             set => _trackingTarget = value;
         }
     
-        private MinimapCamera _minimapCamera;
+        private MinimapSetter _minimapSetter;
         /// <summary>
         /// 미니맵 카메라
         /// </summary>
-        public MinimapCamera MinimapCamera
+        public MinimapSetter MinimapSetter
         {
-            get => _minimapCamera;
-            set => _minimapCamera = value;
+            get => _minimapSetter;
+            set => _minimapSetter = value;
         }
 
         private bool _initialized;
@@ -82,12 +77,11 @@ namespace minimap.runtime
         /// <summary>
         /// 지정된 값에 맞게 미니맵의 멤버 필드를 초기화합니다.
         /// </summary>
-        /// <param name="name">미니맵 이름</param>
         /// <returns>성공 여부</returns>
-        public bool Bake(string name)
+        public bool Bake()
         {
             _initialized = false;
-            if (_minimapCamera == null)
+            if (_minimapSetter == null)
             {
                 Debug.LogError("미니맵 정보는 Null일 수 없습니다.");
                 return _initialized;
@@ -103,17 +97,16 @@ namespace minimap.runtime
                 Debug.LogWarning("미니맵 아이콘 정보가 없으므로, 미니맵에 별도 아이콘을 표기하지 않습니다.");
             else
             {
-                this._name = name;
                 int exclude = LayerMask.GetMask(MinimapRuntime.EDITOR_MINIMAP_LAYER_NAME);
                 int allLayers = ~exclude;
-                _minimapCamera.Camera.cullingMask = allLayers;
+                _minimapSetter.Camera.cullingMask = allLayers;
 
                 // 현재 OnEnabled된 MinimapIcon 대상들을 긁어 오지만, MinimapIconBase의 TargetMinimapName이 특정된 Minimap에 대해서만 가져옴.
                 foreach (MinimapIcon icon in MinimapIcons)
                 {
                     List<MinimapIconSetterBase> targets = GameObject.FindGameObjectsWithTag(icon.Tag)
                         .Select(x => x.GetComponent<MinimapIconSetterBase>())
-                        .Where(x => x.TargetMinimapName == name)
+                        .Where(x => x.MinimapSetter == this.MinimapSetter)
                         .ToList();
 
                     targets.ForEach(x => 
@@ -130,7 +123,7 @@ namespace minimap.runtime
                 }
             }
             
-            _minimapCamera.TrackingTarget = _trackingTarget;
+            _minimapSetter.TrackingTarget = _trackingTarget;
             RegisterdMinimaps.Add(this);
 
             _initialized = true;
@@ -161,8 +154,8 @@ namespace minimap.runtime
                 return false;
             }
 
-            _minimapCamera.Camera.targetTexture = _renderTextures[renderTexturesKey];
-            _minimapCamera.DepthOnlyCamera.targetTexture = _renderTextures[renderTexturesKey];
+            _minimapSetter.Camera.targetTexture = _renderTextures[renderTexturesKey];
+            _minimapSetter.DepthOnlyCamera.targetTexture = _renderTextures[renderTexturesKey];
             _currentRenderTextureKey = renderTexturesKey;
 
             if (OnChangeTextureEvents.ContainsKey(renderTexturesKey))
@@ -187,7 +180,7 @@ namespace minimap.runtime
                 return;
             }
                 
-            if (target.TargetMinimapName == this.Name)
+            if (target.MinimapSetter == this.MinimapSetter)
             {
                 foreach (var icon in MinimapIcons)
                 {
@@ -221,7 +214,7 @@ namespace minimap.runtime
         /// </summary>
         public void ZoomIn()
         {
-            _minimapCamera.ZoomIn();
+            _minimapSetter.ZoomIn();
         }
 
         /// <summary>
@@ -229,7 +222,7 @@ namespace minimap.runtime
         /// </summary>
         public void ZoomOut()
         {
-            _minimapCamera.ZoomOut();
+            _minimapSetter.ZoomOut();
         }
 
         /// <summary>
@@ -237,7 +230,7 @@ namespace minimap.runtime
         /// </summary>
         public void ZoomReset()
         {
-            _minimapCamera.ZoomReset();
+            _minimapSetter.ZoomReset();
         }
 
         /// <summary>
@@ -246,7 +239,7 @@ namespace minimap.runtime
         /// <param name="movement">이동량</param>
         public void Move(Vector2 movement)
         {
-            _minimapCamera.Move(movement);
+            _minimapSetter.Move(movement);
         }
 
         /// <summary>
@@ -254,7 +247,7 @@ namespace minimap.runtime
         /// </summary>
         public void MoveReset()
         {
-            _minimapCamera.ResetToTarget();
+            _minimapSetter.ResetToTarget();
         }
 
         public void Dispose()

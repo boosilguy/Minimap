@@ -8,8 +8,8 @@ namespace minimap.runtime.camera
     /// <summary>
     /// Perspective Camera를 사용하는 미니맵 카메라
     /// </summary>
-    [CreateAssetMenu(fileName = "MinimapPerspectiveCamera", menuName = "MinimapCreator/MinimapPerspectiveCamera")]
-    public class MinimapPerspectiveCamera : MinimapCamera
+    [CreateAssetMenu(fileName = "MinimapPerspectiveSetter", menuName = "MinimapCreator/Perspective")]
+    public class MinimapPerspectiveSetter : MinimapSetter
     {
         [SerializeField] private float _defaultHeight = 10;
         [SerializeField] private float _defaultDistance = 5;

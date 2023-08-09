@@ -22,7 +22,7 @@ namespace minimap.editor
 
                     if (unusedLayer < 8)
                     {
-                        Debug.LogWarning("·¹ÀÌ¾î 0~7¹ø±îÁö´Â ±âº» ·¹ÀÌ¾î·Î »ç¿ëµÇ¹Ç·Î »ç¿ëÀ» ±ÇÀåÇÏÁö ¾Ê½À´Ï´Ù.");
+                        Debug.LogWarning("ë ˆì´ì–´ 0~7ë²ˆê¹Œì§€ëŠ” ê¸°ë³¸ ë ˆì´ì–´ë¡œ ì‚¬ìš©ë˜ë¯€ë¡œ ì‚¬ìš©ì„ ê¶Œìž¥í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
                     }
 
                     layersProperty.GetArrayElementAtIndex(unusedLayer).stringValue = newLayerName;
@@ -30,7 +30,7 @@ namespace minimap.editor
                 }
                 else
                 {
-                    Debug.LogError("»ç¿ë °¡´ÉÇÑ ·¹ÀÌ¾î°¡ ¾ø½À´Ï´Ù. »õ·Î¿î ·¹ÀÌ¾î¸¦ Ãß°¡ÇÒ ¼ö ¾ø½À´Ï´Ù.");
+                    Debug.LogError("ì‚¬ìš© ê°€ëŠ¥í•œ ë ˆì´ì–´ê°€ ì—†ìŠµë‹ˆë‹¤. ìƒˆë¡œìš´ ë ˆì´ì–´ë¥¼ ì¶”ê°€í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
                 }
             }
         }

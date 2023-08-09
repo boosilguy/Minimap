@@ -6,8 +6,9 @@ namespace minimap.runtime
     /// <summary>
     /// 미니맵에 맵 이름을 표기할 Setter 클래스
     /// </summary>
-    public class MinimapMapNameSetter : MinimapIconSetterBase
+    public class MinimapWorldTextSetter : MinimapIconSetterBase
     {
+        [Header("Minimap TextField")]
         [SerializeField] private string _mapName = MinimapRuntime.MINIMAP_MAP_NAME_ICON_DEFAULT_NAME;
         private Camera _billboardCamera;
 
@@ -16,9 +17,7 @@ namespace minimap.runtime
             base.IconUpdateAction(instantiated);
 
             if (_billboardCamera == null)
-            {
-                _billboardCamera = GetMinimap().MinimapCamera.Camera;
-            }
+                _billboardCamera = _minimapSetter.Camera;
 
             var textComponent = instantiated.GetComponentInChildren<TextMeshProUGUI>();
             if (textComponent == null)

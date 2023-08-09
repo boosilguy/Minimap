@@ -60,9 +60,9 @@ namespace minimap.runtime
         /// </summary>
         /// <param name="minimapCamera">MinimapCamera 인스턴스</param>
         /// <returns>빌더</returns>
-        public MinimapBuilder SetMinimapCamera(MinimapCamera minimapCamera)
+        public MinimapBuilder SetMinimapCamera(MinimapSetter minimapCamera)
         {
-            _buildedMinimap.MinimapCamera = minimapCamera;
+            _buildedMinimap.MinimapSetter = minimapCamera;
             return this;
         }
 
@@ -102,12 +102,11 @@ namespace minimap.runtime
         /// <summary>
         /// 빌더로부터 Minimap 인스턴스를 생성합니다.
         /// </summary>
-        /// <param name="name">미니맵 이름</param>
         /// <returns>Minimap 인스턴스</returns>
         /// <exception cref="Exception">빌드 실패 Exception</exception>
-        public Minimap Build(string name)
+        public Minimap Build()
         {
-            if (_buildedMinimap.Bake(name))
+            if (_buildedMinimap.Bake())
                 return _buildedMinimap;
             else
                 throw new Exception("미니맵 빌드에 실패하였습니다.");

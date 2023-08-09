@@ -1,0 +1,18 @@
+{
+    "name": "Minimap.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6d6dc02681dd5cf4e8e7d4425b97300a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

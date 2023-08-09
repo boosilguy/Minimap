@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace minimap.editor.camera
 {
-    [CustomEditor(typeof(MinimapOrthographicCamera))]
-    public class MinimapOrthographicCameraEditor : Editor
+    [CustomEditor(typeof(MinimapPerspectiveSetter))]
+    public class MinimapPerspectiveSetterEditor : Editor
     {
-        private Texture2D _orthoGuideTexture;
+        private Texture2D _perspectiveGuideTexture;
         private GUIStyle _guideTextureStyle;
 
         private void OnEnable()
         {
-            _orthoGuideTexture = Resources.Load<Texture2D>(MinimapEditor.EDITOR_ORTHOGRAPHIC_GUIDE);
+            _perspectiveGuideTexture = Resources.Load<Texture2D>(MinimapEditor.EDITOR_PERSPECTIVE_GUIDE);
             _guideTextureStyle = new GUIStyle()
             {
                 alignment = TextAnchor.MiddleCenter,
@@ -26,13 +26,15 @@ namespace minimap.editor.camera
         {
             #region Serialized Properties
             SerializedProperty defaultHeight = serializedObject.FindProperty("_defaultHeight");
-            SerializedProperty defaultSize = serializedObject.FindProperty("_defaultSize");
+            SerializedProperty defaultDistance = serializedObject.FindProperty("_defaultDistance");
+            SerializedProperty defaultAngle = serializedObject.FindProperty("_defaultAngle");
+            SerializedProperty defaultFOV = serializedObject.FindProperty("_defaultFOV");
             SerializedProperty defaultNearClipPlane = serializedObject.FindProperty("_defaultNearClipPlane");
             SerializedProperty defaultFarClipPlane = serializedObject.FindProperty("_defaultFarClipPlane");
 
             SerializedProperty commandZoomSpeed = serializedObject.FindProperty("_zoomSpeed");
-            SerializedProperty commandMinSize = serializedObject.FindProperty("_minSize");
-            SerializedProperty commandMaxSize = serializedObject.FindProperty("_maxSize");
+            SerializedProperty commandMinMag = serializedObject.FindProperty("_minMagnification");
+            SerializedProperty commandMaxMag = serializedObject.FindProperty("_maxMagnification");
             SerializedProperty commandMoveSpeed = serializedObject.FindProperty("_moveSpeed");
 
             SerializedProperty worldCenter = serializedObject.FindProperty("_worldCenter");
@@ -48,15 +50,17 @@ namespace minimap.editor.camera
                 EditorGUILayout.Space(5);
                 {
                     EditorGUILayout.LabelField("Minimap Guideline", EditorStyles.boldLabel);
-                    GUILayout.Label(_orthoGuideTexture, _guideTextureStyle);
+                    GUILayout.Label(_perspectiveGuideTexture, _guideTextureStyle);
 
                     EditorGUILayout.Space(5);
 
                     EditorGUILayout.PropertyField(defaultHeight);
+                    EditorGUILayout.PropertyField(defaultDistance);
+                    EditorGUILayout.PropertyField(defaultAngle);
 
                     EditorGUILayout.Space(5);
 
-                    EditorGUILayout.PropertyField(defaultSize);
+                    EditorGUILayout.PropertyField(defaultFOV);
                     EditorGUILayout.PropertyField(defaultNearClipPlane);
                     EditorGUILayout.PropertyField(defaultFarClipPlane);
                 }
@@ -73,8 +77,8 @@ namespace minimap.editor.camera
                     EditorGUILayout.Space(5);
 
                     EditorGUILayout.PropertyField(commandZoomSpeed);
-                    EditorGUILayout.PropertyField(commandMinSize);
-                    EditorGUILayout.PropertyField(commandMaxSize);
+                    EditorGUILayout.PropertyField(commandMinMag);
+                    EditorGUILayout.PropertyField(commandMaxMag);
 
                     EditorGUILayout.Space(5);
 

@@ -8,8 +8,8 @@ namespace minimap.runtime.camera
     /// <summary>
     /// Orthographic Camera를 사용하는 미니맵 카메라
     /// </summary>
-    [CreateAssetMenu(fileName = "MinimapOrthographicCamera", menuName = "MinimapCreator/MinimapOrthographicCamera")]
-    public class MinimapOrthographicCamera : MinimapCamera
+    [CreateAssetMenu(fileName = "MinimapOrthographicSetter", menuName = "MinimapCreator/Orthographic")]
+    public class MinimapOrthographicSetter : MinimapSetter
     {
         [SerializeField] private float _defaultHeight = 20;
         [SerializeField] private float _defaultSize = 20;
@@ -28,6 +28,7 @@ namespace minimap.runtime.camera
 
         private Camera _camera;
         private Camera _depthOnlyCamera;
+        private Transform _minimapCameraPivot;
         private Transform _trackingTarget;
         private PlaneBounds _worldBoundary;
 
@@ -123,7 +124,11 @@ namespace minimap.runtime.camera
 
         private void StartTrackingTarget(Transform target)
         {
-            Camera.transform.SetParent(target);
+            _minimapCameraPivot = new GameObject("Pivot").transform;
+            _minimapCameraPivot.SetParent(target);
+            _minimapCameraPivot.localPosition = Vector3.zero;
+
+            Camera.transform.SetParent(_minimapCameraPivot);
             Camera.transform.localPosition = new Vector3(0f, DefaultHeight, 0);
             Camera.transform.LookAt(target);
         }
@@ -150,14 +155,16 @@ namespace minimap.runtime.camera
 
         public override void Move(Vector2 position)
         {
-            Vector3 newPostion = _camera.transform.position - new Vector3(position.x, 0, position.y) * _moveSpeed;
-            if (newPostion.x < WorldBoundary.Min.x || 
-                newPostion.x > WorldBoundary.Max.x || 
-                newPostion.z < WorldBoundary.Min.y || 
-                newPostion.z > WorldBoundary.Max.y)
+            Vector3 newPosition = _minimapCameraPivot.position - new Vector3(position.x, 0, position.y) * _moveSpeed;
+            if (newPosition.x < WorldBoundary.Min.x || 
+                newPosition.x > WorldBoundary.Max.x || 
+                newPosition.z < WorldBoundary.Min.y || 
+                newPosition.z > WorldBoundary.Max.y)
                 return;
-            
-            _camera.transform.position = newPostion;
+
+            Debug.Log(newPosition);
+
+            _minimapCameraPivot.position = newPosition;
         }
 
         public override void ResetToTarget()

@@ -7,7 +7,7 @@ namespace minimap.runtime.camera
     /// <summary>
     /// 미니맵 카메라
     /// </summary>
-    public abstract class MinimapCamera : ScriptableObject
+    public abstract class MinimapSetter : ScriptableObject
     {
         /// <summary>
         /// 미니맵 탑뷰 카메라

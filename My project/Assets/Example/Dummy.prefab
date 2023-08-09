@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1821bf6e57f6eb841b43d0933b8766a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetMinimapName: DefaultMinimap
+  _minimapSetter: {fileID: 11400000, guid: 217f9c5009687ff4289cdb490ca74b4c, type: 2}
 --- !u!54 &7380029889230538066
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ namespace minimap.sample
     public class MinimapManager : MonoBehaviour
     {
         [Header("3D GameObjects")]
-        [SerializeField] private MinimapCamera _minimapCamera;
+        [SerializeField] private MinimapSetter _minimapCamera;
         [SerializeField] private GameObject _trackingTarget;
         [SerializeField] private GameObject _dummy;
 
@@ -37,7 +37,7 @@ namespace minimap.sample
                 .AddOnChangeListener(("Basic minimap", (renderTexture) => ActiveDefaultMinimap(renderTexture)), 
                                      ("Extended minimap", (renderTexture) => ActiveExtendedMinimap(renderTexture)))
                 .SetTrackingTarget(_trackingTarget.transform)
-                .Build("DefaultMinimap");
+                .Build();
 
             _minimap.Run("Basic minimap");
 
@@ -95,9 +95,9 @@ namespace minimap.sample
         {
             float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
             if (scrollDelta > 0)
-                _minimap.MinimapCamera.ZoomIn();
+                _minimap.MinimapSetter.ZoomIn();
             else if (scrollDelta < 0)
-                _minimap.MinimapCamera.ZoomOut();
+                _minimap.MinimapSetter.ZoomOut();
 
             if (Input.GetKeyDown(KeyCode.R))
                 _minimap.ZoomReset();
@@ -120,7 +120,7 @@ namespace minimap.sample
             if (_isDragging)
             {
                 Vector3 dragDelta = Input.mousePosition - _dragStartPosition;
-                _minimap.MinimapCamera.Move(dragDelta);
+                _minimap.MinimapSetter.Move(dragDelta);
                 _dragStartPosition = Vector3.Lerp(_dragStartPosition, Input.mousePosition, Time.deltaTime * _minimapMoveSensitive);
             }
         }

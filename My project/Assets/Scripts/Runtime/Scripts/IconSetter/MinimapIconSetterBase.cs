@@ -1,6 +1,8 @@
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using minimap.runtime.camera;
+using System.Linq;
 
 namespace minimap.runtime
 {
@@ -9,11 +11,13 @@ namespace minimap.runtime
     /// </summary>
     public class MinimapIconSetterBase : MonoBehaviour 
     {
-        [SerializeField] private string _targetMinimapName;
+        [Header("Minimap Setter")]
+        [SerializeField] protected MinimapSetter _minimapSetter;
+
         /// <summary>
-        /// 미니맵 아이콘을 등록할 미니맵 이름
+        /// 할당할 아이콘 목록이 있는 MinimapCamera를 반환합니다.
         /// </summary>
-        public string TargetMinimapName => _targetMinimapName;
+        public MinimapSetter MinimapSetter => _minimapSetter;
 
         private GameObject _minimapIcon;
         /// <summary>
@@ -24,24 +28,15 @@ namespace minimap.runtime
             set => _minimapIcon = value;
         }
 
-        /// <summary>
-        /// 현재 TargetMinimapName의 인스턴스를 가져옵니다.
-        /// </summary>
-        /// <returns>TargetMinimapName 미니맵 인스턴스</returns>
-        public Minimap GetMinimap()
-        {
-            return Minimap.RegisterdMinimaps.Find(minimap => minimap.Name == _targetMinimapName);
-        }
+        private Minimap _minimap;
 
         protected virtual void Start()
         {
-            Minimap.RegisterdMinimaps.ForEach(minimap =>
-            {
-                if (minimap.Name == _targetMinimapName)
-                {
-                    minimap.RegistMinimapIconInRuntime(this);
-                }
-            });
+            _minimap = Minimap.RegisterdMinimaps.Where(x => x.MinimapSetter == _minimapSetter).FirstOrDefault();
+            if (_minimap == null)
+                Debug.LogError("MinimapCamera로 생성된 Minimap이 존재하지 않습니다.");
+            else
+                _minimap.RegistMinimapIconInRuntime(this);
         }
 
         internal virtual GameObject CreateMinimapIcon()
@@ -71,7 +66,10 @@ namespace minimap.runtime
 
         protected virtual void OnDestroy()
         {
-            GetMinimap().UnregistMinimapIconInRuntime(this);
+            if (_minimap == null)
+                return;
+            else
+                _minimap.UnregistMinimapIconInRuntime(this);
         }
     }
 }

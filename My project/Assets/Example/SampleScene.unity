@@ -994,7 +994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0182dea16d62be04498261e9b11afbdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetMinimapName: DefaultMinimap
+  _minimapSetter: {fileID: 11400000, guid: 217f9c5009687ff4289cdb490ca74b4c, type: 2}
   _mapName: Test Map
 --- !u!1 &949126189
 GameObject:
@@ -1484,7 +1484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1821bf6e57f6eb841b43d0933b8766a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetMinimapName: DefaultMinimap
+  _minimapSetter: {fileID: 11400000, guid: 217f9c5009687ff4289cdb490ca74b4c, type: 2}
 --- !u!1 &1645526249
 GameObject:
   m_ObjectHideFlags: 0

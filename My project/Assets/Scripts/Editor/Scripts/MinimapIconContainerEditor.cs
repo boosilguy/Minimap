@@ -30,7 +30,7 @@ namespace minimap.editor
                         EditorGUILayout.BeginVertical(_styleContentBox);
                         {
                             EditorGUILayout.Space(5);
-                            EditorGUILayout.LabelField(minimap.Name, _styleMinimapTitle);
+                            EditorGUILayout.LabelField(minimap.ToString(), _styleMinimapTitle);
                             EditorGUILayout.Space(5);
                             DrawMinimapIconInfo(minimap);
                             EditorGUILayout.Space(5);
