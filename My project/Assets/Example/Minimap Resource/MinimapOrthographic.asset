@@ -9,23 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43e9da403a5fbd14fb9cd800411a0a77, type: 3}
-  m_Name: MinimapPerspectiveCamera
+  m_Script: {fileID: 11500000, guid: 952c2a3fdeb8c3d4bb117812882fe2ac, type: 3}
+  m_Name: MinimapOrthographic
   m_EditorClassIdentifier: 
-  _defaultHeight: 10
-  _defaultDistance: 5
-  _defaultAngle: 45
-  _defaultFOV: 60
+  _defaultHeight: 20
+  _defaultSize: 20
   _defaultNearClipPlane: 1
   _defaultFarClipPlane: 1000
-  _minMagnification: 0.8
-  _maxMagnification: 5
-  _worldThreshold:
-    _center: {x: 0, y: -10}
-    _width: 25
-    _height: 25
-  _zoomSpeed: 0.8
-  _moveSpeed: 0.0005
+  _minSize: 10
+  _maxSize: 50
+  _worldCenter: {x: 0, y: 0}
+  _worldWidth: 100
+  _worldHeight: 100
+  _zoomSpeed: 1
+  _moveSpeed: 0.005
   _minimapIcons:
   - _tag: Player
     _iconPrefab: {fileID: 7969430742396131413, guid: 25af0c110f81f54469ed64ca04e73dcb, type: 3}

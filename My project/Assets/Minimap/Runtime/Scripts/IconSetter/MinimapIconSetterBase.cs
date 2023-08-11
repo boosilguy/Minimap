@@ -1,6 +1,4 @@
 using UnityEngine;
-using UniRx;
-using UniRx.Triggers;
 using minimap.runtime.camera;
 using System.Linq;
 
@@ -25,10 +23,12 @@ namespace minimap.runtime
         /// </summary>
         public GameObject MinimapIcon
         {
+            protected get => _minimapIcon;
             set => _minimapIcon = value;
         }
 
         private Minimap _minimap;
+        protected GameObject _instantiatedIcon;
 
         protected virtual void Start()
         {
@@ -37,6 +37,12 @@ namespace minimap.runtime
                 Debug.LogError("MinimapCamera로 생성된 Minimap이 존재하지 않습니다.");
             else
                 _minimap.RegistMinimapIconInRuntime(this);
+        }
+
+        protected virtual void Update()
+        {
+            if (_instantiatedIcon != null)
+                UpdateIconPosition();
         }
 
         internal virtual GameObject CreateMinimapIcon()
@@ -48,28 +54,31 @@ namespace minimap.runtime
             }
             else
             {
-                GameObject instantiatedIcon = Instantiate(_minimapIcon, MinimapIconContainer.Instance.transform);
-                this.UpdateAsObservable()
-                    .Subscribe(_ =>
-                    {
-                        IconUpdateAction(instantiatedIcon);
-                    });
-                return instantiatedIcon;
+                _instantiatedIcon = Instantiate(_minimapIcon, MinimapIconContainer.Instance.transform);
+                return _instantiatedIcon;
             }
         }
 
-        protected virtual void IconUpdateAction(GameObject instantiated)
+        protected virtual void UpdateIconPosition(bool rotation = true)
         {
-            var updatedPosition = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
-            instantiated.transform.position = updatedPosition;
+            if (_instantiatedIcon != null)
+            {
+                var updatedPosition = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+                _instantiatedIcon.transform.position = updatedPosition;
+
+                if (rotation)
+                {
+                    var updatedRotation = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0);
+                    _instantiatedIcon.transform.rotation = updatedRotation;
+                }
+            }
+            else
+                return;
         }
 
         protected virtual void OnDestroy()
         {
-            if (_minimap == null)
-                return;
-            else
-                _minimap.UnregistMinimapIconInRuntime(this);
+            _minimap?.UnregistMinimapIconInRuntime(this);
         }
     }
 }

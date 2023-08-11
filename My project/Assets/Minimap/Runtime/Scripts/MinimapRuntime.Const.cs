@@ -24,11 +24,6 @@ namespace minimap.runtime
         public static string MINIMAP_DEPTH_CAM_NAME = "MinimapDepthCamera";
 
         /// <summary>
-        /// Map Name Icon의 Textfield의 기본값
-        /// </summary>
-        public static string MINIMAP_MAP_NAME_ICON_DEFAULT_NAME = "Default Map Name";
-
-        /// <summary>
         /// Minimap Icon Container의 GameObject 이름
         /// </summary>
         public static string MINIMAP_ICON_CONTAINER_NAME = "MinimapIconContainer";

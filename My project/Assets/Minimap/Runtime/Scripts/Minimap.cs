@@ -116,9 +116,7 @@ namespace minimap.runtime
                             icon.IconPrefab.layer = LayerMask.NameToLayer(MinimapRuntime.EDITOR_MINIMAP_LAYER_NAME);
                         
                         x.MinimapIcon = icon.IconPrefab;
-    
-                        var created = x.CreateMinimapIcon();
-                        MinimapIconBases.Add(x, created);
+                        MinimapIconBases.Add(x, x.CreateMinimapIcon());
                     });
                 }
             }
@@ -187,8 +185,7 @@ namespace minimap.runtime
                     if (icon.Tag == target.tag)
                     {
                         target.MinimapIcon = icon.IconPrefab;
-                        var created = target.CreateMinimapIcon();
-                        MinimapIconBases.Add(target, created);
+                        MinimapIconBases.Add(target, target.CreateMinimapIcon());
                         return;
                     }
                 }
