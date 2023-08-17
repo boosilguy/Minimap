@@ -14,18 +14,30 @@ namespace minimap.sample
         [SerializeField] private GameObject _dummy;
 
         [Header("Minimap UI Configurations")]
-        [SerializeField] private RawImage _defaultMinimapRawImage;
-        [SerializeField] private RawImage _extendedMinimapRawImage;
-        [SerializeField] private Button _minimapMinimizeButton;
-        [SerializeField] private Button _minimapMaximizeButton;
+        [SerializeField] private GameObject _defaultMinimapGUI;
+        [SerializeField] private GameObject _extendedMinimapGUI;
 
         [Header("Minimap Interaction Properties")]
         [SerializeField] private float _minimapMoveSensitive = 8;
+
+        private RawImage _defaultMinimapRawImage;
+        private RawImage _extendedMinimapRawImage;
+        private Button _minimapMinimizeButton;
+        private Button _minimapMaximizeButton;
 
         private RawImageHoverManager _extendedMinimapHoverManager;
         private Minimap _minimap;
         private bool _isDragging = false;
         private Vector3 _dragStartPosition = Vector3.zero;
+
+        private void Awake()
+        {
+            _defaultMinimapRawImage = _defaultMinimapGUI.GetComponentInChildren<RawImage>();
+            _extendedMinimapRawImage = _extendedMinimapGUI.GetComponentInChildren<RawImage>();
+
+            _minimapMinimizeButton = _extendedMinimapGUI.GetComponentInChildren<Button>(); 
+            _minimapMaximizeButton = _defaultMinimapGUI.GetComponentInChildren<Button>();
+        }
 
         private void Start ()
         {
@@ -63,16 +75,16 @@ namespace minimap.sample
 
         private void ActiveDefaultMinimap(RenderTexture renderTexture)
         {
-            _extendedMinimapRawImage.transform.parent.gameObject.SetActive(false);
-            _defaultMinimapRawImage.transform.parent.gameObject.SetActive(true);
+            _extendedMinimapGUI.SetActive(false);
+            _defaultMinimapGUI.SetActive(true);
             _minimap.ZoomReset();
             _minimap.MoveReset();
         }
 
         private void ActiveExtendedMinimap(RenderTexture renderTexture)
         {
-            _extendedMinimapRawImage.transform.parent.gameObject.SetActive(true);
-            _defaultMinimapRawImage.transform.parent.gameObject.SetActive(false);
+            _extendedMinimapGUI.SetActive(true);
+            _defaultMinimapGUI.SetActive(false);
         }
 
         private void GetMinimapCommand()
