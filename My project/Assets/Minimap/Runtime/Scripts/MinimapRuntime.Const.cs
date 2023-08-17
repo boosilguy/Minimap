@@ -27,6 +27,10 @@ namespace minimap.runtime
         /// Minimap Icon Container의 GameObject 이름
         /// </summary>
         public static string MINIMAP_ICON_CONTAINER_NAME = "MinimapIconContainer";
+        /// <summary>
+        /// Minimap Camera Object의 Move Pivot GameObject 이름
+        /// </summary>
+        public static string MINIMAP_MOVE_PIVOT_NAME = "MinimapMovePivot";
     }
 }
 

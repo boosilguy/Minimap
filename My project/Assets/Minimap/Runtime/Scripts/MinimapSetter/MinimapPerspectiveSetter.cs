@@ -30,6 +30,7 @@ namespace minimap.runtime.camera
 
         private Camera _camera;
         private Camera _depthOnlyCamera;
+        private Transform _minimapCameraMovePivot;
         private Transform _trackingTarget;
         private PlaneBounds _worldBoundary;
 
@@ -126,13 +127,17 @@ namespace minimap.runtime.camera
             minimapCamera.fieldOfView = DefaultFOV;
             minimapCamera.nearClipPlane = DefaultNearClipPlane;
             minimapCamera.farClipPlane = DefaultFarClipPlane;
+            minimapCamera.gameObject.AddComponent<CameraWithNoShadow>();
 
             return minimapCamera;
         }
 
         private void StartTrackingTarget(Transform target)
         {
-            Camera.transform.SetParent(target);
+            _minimapCameraMovePivot = new GameObject(MinimapRuntime.MINIMAP_MOVE_PIVOT_NAME).transform;
+            _minimapCameraMovePivot.SetParent(target);
+
+            Camera.transform.SetParent(_minimapCameraMovePivot);
             Camera.transform.localPosition = new Vector3(0f, _defaultHeight, -_defaultDistance);
             float calculatedAngle = 90f - DefaultAngle;
 
@@ -165,14 +170,14 @@ namespace minimap.runtime.camera
 
         public override void Move(Vector2 position)
         {
-            Vector3 newPostion = _camera.transform.position - new Vector3(position.x, 0, position.y) * _moveSpeed;
+            Vector3 newPostion = _minimapCameraMovePivot.localPosition - new Vector3(position.x, 0, position.y) * _moveSpeed;
             if (newPostion.x < WorldBoundary.Min.x ||
                 newPostion.x > WorldBoundary.Max.x ||
                 newPostion.z < WorldBoundary.Min.y ||
                 newPostion.z > WorldBoundary.Max.y)
                 return;
 
-            _camera.transform.position = newPostion;
+            _minimapCameraMovePivot.transform.localPosition = newPostion;
         }
 
         public override void ResetToTarget()

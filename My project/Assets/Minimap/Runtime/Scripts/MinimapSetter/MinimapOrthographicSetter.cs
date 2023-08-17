@@ -21,14 +21,14 @@ namespace minimap.runtime.camera
         [SerializeField] private Vector2 _worldCenter = Vector2.zero;
         [SerializeField] private float _worldWidth = 100;
         [SerializeField] private float _worldHeight = 100;
-        [SerializeField] private float _zoomSpeed = 0.01f;
-        [SerializeField] private float _moveSpeed = 0.01f;
+        [SerializeField] private float _zoomSpeed = 1f;
+        [SerializeField] private float _moveSpeed = 0.0035f;
 
         [SerializeField] private List<MinimapIcon> _minimapIcons;
 
         private Camera _camera;
         private Camera _depthOnlyCamera;
-        private Transform _minimapCameraPivot;
+        private Transform _minimapCameraMovePivot;
         private Transform _trackingTarget;
         private PlaneBounds _worldBoundary;
 
@@ -124,11 +124,10 @@ namespace minimap.runtime.camera
 
         private void StartTrackingTarget(Transform target)
         {
-            _minimapCameraPivot = new GameObject("Pivot").transform;
-            _minimapCameraPivot.SetParent(target);
-            _minimapCameraPivot.localPosition = Vector3.zero;
+            _minimapCameraMovePivot = new GameObject(MinimapRuntime.MINIMAP_MOVE_PIVOT_NAME).transform;
+            _minimapCameraMovePivot.SetParent(target);
 
-            Camera.transform.SetParent(_minimapCameraPivot);
+            Camera.transform.SetParent(_minimapCameraMovePivot);
             Camera.transform.localPosition = new Vector3(0f, DefaultHeight, 0);
             Camera.transform.LookAt(target);
         }
@@ -155,16 +154,14 @@ namespace minimap.runtime.camera
 
         public override void Move(Vector2 position)
         {
-            Vector3 newPosition = _minimapCameraPivot.position - new Vector3(position.x, 0, position.y) * _moveSpeed;
+            Vector3 newPosition = _minimapCameraMovePivot.localPosition - new Vector3(position.x, 0, position.y) * _moveSpeed;
             if (newPosition.x < WorldBoundary.Min.x || 
                 newPosition.x > WorldBoundary.Max.x || 
                 newPosition.z < WorldBoundary.Min.y || 
                 newPosition.z > WorldBoundary.Max.y)
                 return;
 
-            Debug.Log(newPosition);
-
-            _minimapCameraPivot.position = newPosition;
+            _minimapCameraMovePivot.localPosition = newPosition;
         }
 
         public override void ResetToTarget()

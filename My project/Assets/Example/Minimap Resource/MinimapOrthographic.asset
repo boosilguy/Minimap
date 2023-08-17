@@ -22,7 +22,7 @@ MonoBehaviour:
   _worldWidth: 100
   _worldHeight: 100
   _zoomSpeed: 1
-  _moveSpeed: 0.005
+  _moveSpeed: 0.0035
   _minimapIcons:
   - _tag: Player
     _iconPrefab: {fileID: 7969430742396131413, guid: 25af0c110f81f54469ed64ca04e73dcb, type: 3}
