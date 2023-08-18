@@ -127,9 +127,12 @@ namespace minimap.runtime.camera
             _minimapCameraMovePivot = new GameObject(MinimapRuntime.MINIMAP_MOVE_PIVOT_NAME).transform;
             _minimapCameraMovePivot.SetParent(target);
 
-            Camera.transform.SetParent(_minimapCameraMovePivot);
+            Camera.transform.SetParent(_minimapCameraMovePivot, false);
             Camera.transform.localPosition = new Vector3(0f, DefaultHeight, 0);
             Camera.transform.LookAt(target);
+            Vector3 rawEulerAngles = Camera.transform.localEulerAngles;
+            rawEulerAngles.y = 0f;
+            Camera.transform.localEulerAngles = rawEulerAngles;
         }
 
         public override void ZoomIn()
@@ -155,9 +158,9 @@ namespace minimap.runtime.camera
         public override void Move(Vector2 position)
         {
             Vector3 newPosition = _minimapCameraMovePivot.localPosition - new Vector3(position.x, 0, position.y) * _moveSpeed;
-            if (newPosition.x < WorldBoundary.Min.x || 
-                newPosition.x > WorldBoundary.Max.x || 
-                newPosition.z < WorldBoundary.Min.y || 
+            if (newPosition.x < WorldBoundary.Min.x ||
+                newPosition.x > WorldBoundary.Max.x ||
+                newPosition.z < WorldBoundary.Min.y ||
                 newPosition.z > WorldBoundary.Max.y)
                 return;
 
@@ -166,7 +169,7 @@ namespace minimap.runtime.camera
 
         public override void ResetToTarget()
         {
-            Camera.transform.localPosition = new Vector3(0f, DefaultHeight, 0f);
+            _minimapCameraMovePivot.localPosition = new Vector3(0f, DefaultHeight, 0f);
         }
     }
 }

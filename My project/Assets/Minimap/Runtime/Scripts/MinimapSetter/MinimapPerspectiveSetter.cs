@@ -182,7 +182,7 @@ namespace minimap.runtime.camera
 
         public override void ResetToTarget()
         {
-            Camera.transform.localPosition = new Vector3(0f, Camera.transform.localPosition.y, -(_defaultDistance * Camera.transform.localPosition.y) / _defaultHeight);
+            _minimapCameraMovePivot.localPosition = new Vector3(0f, Camera.transform.localPosition.y, -(_defaultDistance * Camera.transform.localPosition.y) / _defaultHeight);
         }
     }
 }

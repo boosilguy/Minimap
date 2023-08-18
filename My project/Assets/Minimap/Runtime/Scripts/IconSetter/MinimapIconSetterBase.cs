@@ -7,7 +7,7 @@ namespace minimap.runtime
     /// <summary>
     /// 기본 미니맵 아이콘 Setter 클래스
     /// </summary>
-    public class MinimapIconSetterBase : MonoBehaviour 
+    public class MinimapIconSetterBase : MonoBehaviour
     {
         [Header("Minimap Setter")]
         [SerializeField] protected MinimapSetter _minimapSetter;
@@ -28,15 +28,23 @@ namespace minimap.runtime
         }
 
         private Minimap _minimap;
+        private Minimap Minimap
+        {
+            get
+            {
+                if (_minimap == null)
+                    _minimap = Minimap.RegisterdMinimaps.Where(x => x.MinimapSetter == _minimapSetter).FirstOrDefault();
+                return _minimap;
+            }
+        }
         protected GameObject _instantiatedIcon;
 
         protected virtual void Start()
         {
-            _minimap = Minimap.RegisterdMinimaps.Where(x => x.MinimapSetter == _minimapSetter).FirstOrDefault();
-            if (_minimap == null)
-                Debug.LogError("MinimapCamera로 생성된 Minimap이 존재하지 않습니다.");
+            if (Minimap == null)
+                Debug.LogWarning("MinimapCamera로 생성된 Minimap이 존재하지 않습니다.");
             else
-                _minimap.RegistMinimapIconInRuntime(this);
+                Minimap.RegistMinimapIconInRuntime(this);
         }
 
         protected virtual void Update()
@@ -78,7 +86,7 @@ namespace minimap.runtime
 
         protected virtual void OnDestroy()
         {
-            _minimap?.UnregistMinimapIconInRuntime(this);
+            Minimap?.UnregistMinimapIconInRuntime(this);
         }
     }
 }
