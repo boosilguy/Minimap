@@ -1,11 +1,28 @@
 {
-  "name": "com.boosil.minimap",
-  "displayName": "Minimap",
+  "name": "dynamicminimap",
+  "displayName": "Dynamic Minimap",
   "version": "1.0.0",
   "unity": "2021.3",
   "description": "Dynamic Minimap Generator for Unity",
   "keywords": [
     "Minimap",
-    "Dynamic Minimap"
+    "Dynamic Minimap",
+    "Boosilguy",
+    "Boosil"
+  ],
+  "author": {
+    "name": "Boosilguy",
+    "email": "dev.keonhee@gmail.com",
+    "url": "https://cold-meadow-2843.fly.dev/"
+  },
+  "dependencies": {
+    
+  },
+  "samples": [
+    {
+      "displayName": "Dynamic Minimap",
+      "description": "Dynamic Minimap을 이용해 구현한 간단한 미니맵 예제",
+      "path": "Samples/1. BasicExample"
+    }
   ]
 }
