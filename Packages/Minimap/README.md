@@ -137,3 +137,5 @@ private void ActiveExtendedMinimap(RenderTexture renderTexture)
 *MinimapTestScene 참고*
 
 - MinimapTestScene에서는 미리 Minimap Creator로 생성된 Perspective Minimap, Orthographic Minimap을 할당하여, 각기 테스트를 수행할 수 있음.
+
+![image](./Resources/Images/Readme/minimaportho00.gif)
